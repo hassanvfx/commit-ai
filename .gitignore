@@ -47,3 +47,4 @@ commit-ai.conf
 .pytest_cache/
 .coverage
 htmlcov/
+commit-ai.conf
