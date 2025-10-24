@@ -1,0 +1,70 @@
+#!/usr/bin/env python3
+"""Custom git command: git commit-ai
+Automatically generates AI commit message and commits without opening editor.
+"""
+
+import sys
+import subprocess
+import os
+
+def main():
+    """Main entry point for git commit-ai command."""
+    # Add commit-ai bin to PATH if not already there
+    python_bin = os.path.expanduser("~/Library/Python/3.13/bin")
+    if python_bin not in os.environ.get("PATH", ""):
+        os.environ["PATH"] = f"{python_bin}:{os.environ.get('PATH', '')}"
+    
+    # Check if in git repo
+    try:
+        subprocess.run(['git', 'rev-parse', '--git-dir'], 
+                      capture_output=True, check=True)
+    except subprocess.CalledProcessError:
+        print("❌ Not a git repository")
+        sys.exit(1)
+    
+    # Check for staged changes
+    result = subprocess.run(['git', 'diff', '--cached', '--quiet'],
+                          capture_output=True)
+    if result.returncode == 0:
+        print("❌ No staged changes")
+        print("Try: git add <files>")
+        sys.exit(1)
+    
+    # Generate AI commit message
+    print("🤖 Generating AI commit message...")
+    try:
+        result = subprocess.run(
+            ['commit-ai', 'generate'],
+            capture_output=True,
+            text=True,
+            timeout=30
+        )
+        
+        if result.returncode != 0 or not result.stdout.strip():
+            print("⚠️  AI generation failed, using fallback message")
+            message = "chore: update files"
+        else:
+            message = result.stdout.strip()
+    except Exception as e:
+        print(f"⚠️  Error generating message: {e}")
+        message = "chore: update files"
+    
+    # Show message
+    print("\n" + "="*60)
+    print(message)
+    print("="*60 + "\n")
+    
+    # Commit with generated message
+    print("💾 Committing...")
+    try:
+        subprocess.run(
+            ['git', 'commit', '-m', message],
+            check=True
+        )
+        print("✅ Committed successfully!")
+    except subprocess.CalledProcessError as e:
+        print(f"❌ Commit failed: {e}")
+        sys.exit(1)
+
+if __name__ == '__main__':
+    main()
