@@ -52,7 +52,7 @@ curl -fsSL https://raw.githubusercontent.com/hassan/commit-ai/main/install.sh | 
 
 ```bash
 # Clone the repository
-git clone https://github.com/hassan/commit-ai.git
+git clone https://github.com/hassanvfx/commit-ai.git
 cd commit-ai
 
 # Install
@@ -378,9 +378,9 @@ If you find commit-ai useful, please consider giving it a star! ⭐
 
 ## 📧 Support
 
-- 🐛 [Report a bug](https://github.com/hassan/commit-ai/issues)
-- 💡 [Request a feature](https://github.com/hassan/commit-ai/issues)
-- 💬 [Discussions](https://github.com/hassan/commit-ai/discussions)
+- 🐛 [Report a bug](https://github.com/hassanvfx/commit-ai/issues)
+- 💡 [Request a feature](https://github.com/hassanvfx/commit-ai/issues)
+- 💬 [Discussions](https://github.com/hassanvfx/commit-ai/discussions)
 
 ---
 

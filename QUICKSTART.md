@@ -136,7 +136,7 @@ pip3 install --user -e /Users/hassan/repos/commit-ai
    ```bash
    cd /Users/hassan/repos/commit-ai
    # Add remote
-   git remote add origin https://github.com/hassan/commit-ai.git
+   git remote add origin https://github.com/hassanvfx/commit-ai.git
    git push -u origin main
    ```
 
