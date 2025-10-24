@@ -32,17 +32,11 @@ class PromptBuilder:
             "git commit messages following conventional commit standards."
         )
         
-        # Get reasoning template
-        reasoning_template = self.prompt_config.get(
-            'reasoning_template',
-            self._get_default_reasoning_template()
-        )
+        # Get reasoning template (use default if empty)
+        reasoning_template = self.prompt_config.get('reasoning_template') or self._get_default_reasoning_template()
         
-        # Get output format specification
-        output_format = self.prompt_config.get(
-            'output_format',
-            self._get_default_output_format()
-        )
+        # Get output format specification (use default if empty)
+        output_format = self.prompt_config.get('output_format') or self._get_default_output_format()
         
         # Format examples for few-shot learning
         examples = self._format_examples()
@@ -84,14 +78,14 @@ Remember:
     
     def _get_default_reasoning_template(self) -> str:
         """Get default reasoning template."""
-        return """You will analyze git changes and generate a commit message. Follow these steps:
+        return """TASK: Generate a git commit message for the following changes.
 
-1. ANALYZE: Review the git diff to understand what changed
-2. CATEGORIZE: Determine the type of change (feat, fix, refactor, docs, style, test, chore, perf)
-3. IDENTIFY SCOPE: What component/module is affected (optional but helpful)
-4. SUMMARIZE: Write a concise title describing the main change
-5. ELABORATE: Explain the 'what' and 'why' in the body
-6. FORMAT: Structure as conventional commit
+IMPORTANT INSTRUCTIONS:
+- DO NOT ask questions or be conversational
+- DO NOT say "I'll help you" or similar phrases
+- DIRECTLY generate the commit message
+- Follow conventional commit format exactly
+- Use imperative mood (e.g., "add" not "added")
 
 Git Changes:
 {diff}
@@ -99,7 +93,12 @@ Git Changes:
 Files Modified:
 {files}
 
-Now follow the steps above and generate the commit message."""
+REQUIRED OUTPUT: Generate a commit message following these steps:
+1. Determine change type (feat/fix/docs/style/refactor/test/chore/perf)
+2. Write concise title (max 72 chars): type(scope): description
+3. Write detailed body explaining what and why
+
+Generate the commit message NOW:"""
     
     def _get_default_output_format(self) -> str:
         """Get default output format specification."""

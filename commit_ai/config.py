@@ -27,7 +27,7 @@ class Config:
             "anthropic": {
                 "enabled": False,
                 "api_key": "",
-                "model": "claude-3-sonnet-20240229"
+                "model": "claude-3-5-sonnet-20241022"
             },
             "gemini": {
                 "enabled": False,
@@ -177,6 +177,9 @@ class Config:
         # Navigate to the parent of the target key
         for k in keys[:-1]:
             if k not in current:
+                current[k] = {}
+            elif not isinstance(current[k], dict):
+                # If we encounter a non-dict value, we need to replace it
                 current[k] = {}
             current = current[k]
         
